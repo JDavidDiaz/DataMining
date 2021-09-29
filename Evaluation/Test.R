@@ -21,3 +21,17 @@ f1960 <- Data[filter1960,]
 filter2013 <- Data$Year == 2013
 f2013 <- Data[filter2013,]
 
+#Filtering and Merging data from years 1960 and 2013 into their corresponding years
+all1960 <- merge(f1960, Dataframe, by.x = "Country.Code", by.y = "Country")
+all2013 <- merge(f2013, Dataframe, by.x = "Country.Code", by.y = "Country")
+
+### Plot 1: Life Stats for 1960 ###
+qplot(data=all1960, x=Fertility.Rate, y=Expectancy1960, 
+      size=I(1.5), color=Country_Code, shape=Region, alpha =I(.6), 
+      xlab = "Fertility Rate", ylab = "Life Expectancy", main = "Life Stats 1960: Fertility Rate - Life Expectancy By Region and Country")
+
+### Plot 2 Life Stats for 2013 ###
+qplot(data=all2013, x=Fertility.Rate, y=Expectancy2013, 
+      size=I(1.5), color=Country_Code, shape=Region, alpha =I(.6), 
+      xlab = "Fertility Rate", ylab = "Life Expectancy", main = "Life Stats 2013: Fertility Rate - Life Expectancy By Region and Country")
+
