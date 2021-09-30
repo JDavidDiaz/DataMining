@@ -39,26 +39,35 @@ The function data.frame() creates data frames, tightly coupled collections of va
 Dataframe <- data.frame(Country = Country_Code, Expectancy1960 = Life_Expectancy_At_Birth_1960, Expectancy2013 = Life_Expectancy_At_Birth_2013)
 ```
 ## 5.- Filtering data 
-We need to filter the data by year since we are asked to visualize it for each of these years
+We need to filter the data by year since we are asked to visualize it for each of these years creating a new dataframe from filtering the data
 ``` r
 filter1960 <- Data$Year == 1960
 f1960 <- Data[filter1960,]
 ```
 ## 6.- Merging data
-
-
-``` r
-
-```
-## 7.- Plot 1
-
+Now we merge the new dataframes obtained from the data filtering and the original dataframe specifying the columns used for the merge
 
 ``` r
+#Filtering and Merging data from years 1960 and 2013 into their corresponding years
+
+all1960 <- merge(f1960, Dataframe, by.x = "Country.Code", by.y = "Country")
+all2013 <- merge(f2013, Dataframe, by.x = "Country.Code", by.y = "Country")
 ```
+## 7.- Plot 1 (1960)
+finally we generate the scatter diagram specifying the information represented for each axis in addition to the type of figure, size, colors and labels for the diagram
+``` r
+# Plot 1: Life Stats for 1960 ###
 
-## 8.- Plot 2
+qplot(data=all1960, x=Fertility.Rate, y=Expectancy1960, 
+      size=I(1.5), color=Country_Code, shape=Region, alpha =I(.6), 
+      xlab = "Fertility Rate", ylab = "Life Expectancy", main = "Life Stats 1960: Fertility Rate - Life Expectancy By Region and Country")
+```
+## 8.- Plot 2 (2013)
+``` r
+# Plot 2 Life Stats for 2013 ###
 
-``` scala
-
+qplot(data=all2013, x=Fertility.Rate, y=Expectancy2013, 
+      size=I(1.5), color=Country_Code, shape=Region, alpha =I(.6), 
+      xlab = "Fertility Rate", ylab = "Life Expectancy", main = "Life Stats 2013: Fertility Rate - Life Expectancy By Region and Country")
 ```
 
