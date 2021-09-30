@@ -6,7 +6,7 @@
 
 
 ## 1.- Generate three new vectors
-To start, the first thing we need to do is generate three matrices for the country code and for the life expectancy of both years
+To start, the first thing we need to do is generate three arrays for the country code and for the life expectancy of both years
 
 ``` r
 # Execute below code to generate three new vectors
