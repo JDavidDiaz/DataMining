@@ -70,4 +70,9 @@ qplot(data=all2013, x=Fertility.Rate, y=Expectancy2013,
       size=I(1.5), color=Country_Code, shape=Region, alpha =I(.6), 
       xlab = "Fertility Rate", ylab = "Life Expectancy", main = "Life Stats 2013: Fertility Rate - Life Expectancy By Region and Country")
 ```
+## Results
+### 1960
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_1/Evaluation/Plot1.jpg)
 
+### 2013
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_1/Evaluation/Plot2.jpg)
