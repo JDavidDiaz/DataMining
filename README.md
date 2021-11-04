@@ -5,7 +5,7 @@ In the branch named _"Unit 2"_ we have the following practices:
 ## Index
 
 [Practice_1](https://github.com/JDavidDiaz/DataMining/blob/Unit_2/Practices/Practice_1.R)   
-[Research_1 Gramática de las gráficas](https://github.com/JDavidDiaz/DataMining/blob/Unit_2/Investigations/Investigaci%C3%B3n_1%20-%20Gram%C3%A1tica%20de%20las%20gr%C3%A1ficas.pdf)
+[Research_1 Gramática de las gráficas](https://github.com/JDavidDiaz/DataMining/blob/Unit_2/Investigations/Investigaci%C3%B3n_1%20-%20Gram%C3%A1tica%20de%20las%20gr%C3%A1ficas.pdf)   
 [Research_2 Tipos de Distribución](https://github.com/JDavidDiaz/DataMining/blob/Unit_2/Investigations/Investigaci%C3%B3n-2_-Tipos-de-Distribuci%C3%B3n.pdf)
 
 
