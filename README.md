@@ -6,8 +6,8 @@ In the branch named _"Unit 2"_ we have the following practices:
 
 [Practice_1](https://github.com/JDavidDiaz/DataMining/blob/Unit_2/Practices/Practice_1.R)   
 [Research_1 Gramática de las gráficas](https://github.com/JDavidDiaz/DataMining/blob/Unit_2/Investigations/Investigaci%C3%B3n_1%20-%20Gram%C3%A1tica%20de%20las%20gr%C3%A1ficas.pdf)   
-[Research_2 Tipos de Distribución](https://github.com/JDavidDiaz/DataMining/blob/Unit_2/Investigations/Investigaci%C3%B3n-2_-Tipos-de-Distribuci%C3%B3n.pdf)
-[Evaluation_2]()
+[Research_2 Tipos de Distribución](https://github.com/JDavidDiaz/DataMining/blob/Unit_2/Investigations/Investigaci%C3%B3n-2_-Tipos-de-Distribuci%C3%B3n.pdf)   
+[Evaluation_2](https://github.com/JDavidDiaz/DataMining/blob/Unit_2/Evaluation/Test_2_v1.R)
 
 # Practice 1
 
@@ -101,7 +101,7 @@ p6$labels$size <- "Budget $M"
 p6$labels$colour <- "Studio's"
 p6
 ```
-
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_2/Evaluation/Plot_Test.JPG)
 # **Collaborators:**
 
 Diaz Urias Jorge David
