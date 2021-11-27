@@ -5,7 +5,7 @@ In the branch named _"Unit 3"_ we have the following practices:
 ## Index
 
 [Practice_1](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Practices/Practice_1.r)   
-[Practice_2](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Practices/Practice_2.r)
+[Practice_2](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Practices/Practice_2.R)
 
 # Practice 1 - Simple Linear Regression
 ## 1.- Importing the dataset
@@ -80,6 +80,124 @@ ggplot() +
 ```
 
 ![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice1_Resource2.jpg)
+
+# Practice 1 - Simple Linear Regression
+
+## 1.- Importing the dataset
+```r
+dataset <- read.csv('50_Startups.csv')
+```
+
+## 2.- Encoding categorical data, this means we will transform the categorical data into a numerical value which represents that data. 
+```r
+dataset$State = factor(dataset$State,
+                       levels = c('New York', 'California', 'Florida'),
+                       labels = c(1,2,3))
+dataset
+```
+
+## 3.- Splitting the dataset into the Training set and Test set
+```r
+install.packages('caTools') // Install if not done yet
+library(caTools)
+set.seed(123)
+split <- sample.split(dataset$Profit, SplitRatio = 0.8)
+training_set <- subset(dataset, split == TRUE)
+test_set <- subset(dataset, split == FALSE)
+```
+
+## 4.- Fitting Multiple Linear Regression to the Training set
+```r
+//regressor = lm(formula = Profit ~ R.D.Spend + Administration + Marketing.Spend + State)
+regressor = lm(formula = Profit ~ .,
+               data = training_set )
+summary(regressor)
+```
+
+## 5.- Prediction the Test set results
+```r
+y_pred = predict(regressor, newdata = test_set)
+y_pred
+```
+
+## 6.- Assignment: visualize the simple linear regression model with R.D.Spend 
+```r
+library(ggplot2)
+
+//Training Data Set
+ggplot() +
+  geom_point(aes(x=training_set$R.D.Spend,
+                 y=training_set$Profit),
+             color = 'red') +
+  geom_line(aes(x = training_set$R.D.Spend, y =
+                  predict(regressor, newdata = training_set)),
+            color = 'blue') +
+  ggtitle('R.D.Spend vs Profit (Training Set)') +
+  xlab('R.D.Spend') +
+  ylab('Profit')
+```
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/TrainingSetP2.png)  
+```r
+//Test Data Set
+ggplot() +
+  geom_point(aes(x=test_set$R.D.Spend,
+                 y=test_set$Profit),
+             color = 'red') +
+  geom_line(aes(x = test_set$R.D.Spend, y =
+                  predict(regressor, newdata = test_set)),
+            color = 'blue') +
+  ggtitle('R.D.Spend vs Profit (Test Set)') +
+  xlab('R.D.Spend') +
+  ylab('Profit')
+```
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/TestSetP2.png)
+
+## 7.- Building the optimal model using Backward Elimination
+```r
+regressor = lm(formula = Profit ~ R.D.Spend + Administration + Marketing.Spend + State,
+               data = dataset )
+summary(regressor)
+
+regressor = lm(formula = Profit ~ R.D.Spend + Administration + Marketing.Spend,
+               data = dataset )
+summary(regressor)
+
+regressor = lm(formula = Profit ~ R.D.Spend + Marketing.Spend,
+               data = dataset )
+summary(regressor)
+
+regressor = lm(formula = Profit ~ R.D.Spend + Marketing.Spend,
+               data = dataset )
+summary(regressor)
+
+y_pred = predict(regressor, newdata = test_set)
+y_pred
+```
+
+## 8.- Analyze the following automation backwardElimination function 
+```r
+// We start by declaring the function, this takes the amount of data entries in the dataset as X and sl as 0.05. Following, it iterates the same amount of data entries the dataset has and applies the MLR formula, if the values of the coefficients in maxVar is greater than sl (0.05) then it takes it out as a backward elimination and continues iterating until finished with all the data entries. Finally, it takes the data of the coefficients obtained and prints it on the console.
+backwardElimination <- function(x, sl) {
+  numVars = length(x)
+  for (i in c(1:numVars)){
+    regressor = lm(formula = Profit ~ ., data = x)
+    maxVar = max(coef(summary(regressor))[c(2:numVars), "Pr(>|t|)"])
+    if (maxVar > sl){
+      j = which(coef(summary(regressor))[c(2:numVars), "Pr(>|t|)"] == maxVar)
+      x = x[, -j]
+    }
+    numVars = numVars - 1
+  }
+  return(summary(regressor))
+}
+
+SL = 0.05
+//dataset = dataset[, c(1,2,3,4,5)]
+training_set
+backwardElimination(training_set, SL)
+```
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/P2.png)
+
 
 ### 
 # **Collaborators:**

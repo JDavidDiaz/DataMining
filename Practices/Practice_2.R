@@ -30,7 +30,32 @@ summary(regressor)
 y_pred = predict(regressor, newdata = test_set)
 y_pred
 
-# Assigment: visualize the siple liner regression model with R.D.Spend 
+# Visualize the simple linear regression model with R.D.Spend 
+library(ggplot2)
+
+#Training Data Set
+ggplot() +
+  geom_point(aes(x=training_set$R.D.Spend,
+                 y=training_set$Profit),
+             color = 'red') +
+  geom_line(aes(x = training_set$R.D.Spend, y =
+                  predict(regressor, newdata = training_set)),
+            color = 'blue') +
+  ggtitle('R.D.Spend vs Profit (Training Set)') +
+  xlab('R.D.Spend') +
+  ylab('Profit')
+
+# Test Data Set
+ggplot() +
+  geom_point(aes(x=test_set$R.D.Spend,
+                 y=test_set$Profit),
+             color = 'red') +
+  geom_line(aes(x = test_set$R.D.Spend, y =
+                  predict(regressor, newdata = test_set)),
+            color = 'blue') +
+  ggtitle('R.D.Spend vs Profit (Test Set)') +
+  xlab('R.D.Spend') +
+  ylab('Profit')
 
 # Building the optimal model using Backward Elimination
 regressor = lm(formula = Profit ~ R.D.Spend + Administration + Marketing.Spend + State,
