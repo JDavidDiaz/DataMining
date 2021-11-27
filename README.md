@@ -81,7 +81,7 @@ ggplot() +
 
 ![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice1_Resource2.jpg)
 
-# Practice 1 - Simple Linear Regression
+# Practice 2 - Multiple Linear Regression
 
 ## 1.- Importing the dataset
 Startup by reading the csv file.
