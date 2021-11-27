@@ -84,11 +84,13 @@ ggplot() +
 # Practice 1 - Simple Linear Regression
 
 ## 1.- Importing the dataset
+Startup by reading the csv file.
 ```r
 dataset <- read.csv('50_Startups.csv')
 ```
 
 ## 2.- Encoding categorical data, this means we will transform the categorical data into a numerical value which represents that data. 
+We assign the values of the cities as numerical in order for the model to understand what each of this cities represent as a numerical value.
 ```r
 dataset$State = factor(dataset$State,
                        levels = c('New York', 'California', 'Florida'),
@@ -97,6 +99,9 @@ dataset
 ```
 
 ## 3.- Splitting the dataset into the Training set and Test set
+To start off, we have to install the caTools package if not already installed.
+Following we utilize the library caTools and we set up a random seed to make the splits of the dataset.
+Then we decide to split the data in an 80% / 20% ratio for training and testing. TRUE value is for 80% and FALSE for 20%.
 ```r
 install.packages('caTools') // Install if not done yet
 library(caTools)
@@ -107,6 +112,7 @@ test_set <- subset(dataset, split == FALSE)
 ```
 
 ## 4.- Fitting Multiple Linear Regression to the Training set
+Here we create the regressor, which will allow us to fit the MLR into the Training Set.
 ```r
 //regressor = lm(formula = Profit ~ R.D.Spend + Administration + Marketing.Spend + State)
 regressor = lm(formula = Profit ~ .,
@@ -115,12 +121,14 @@ summary(regressor)
 ```
 
 ## 5.- Prediction the Test set results
+We add the predict values.
 ```r
 y_pred = predict(regressor, newdata = test_set)
 y_pred
 ```
 
 ## 6.- Assignment: visualize the simple linear regression model with R.D.Spend 
+We create the Training Set Visualization utilizing R.D.Spend vs Profit. 
 ```r
 library(ggplot2)
 
@@ -136,7 +144,9 @@ ggplot() +
   xlab('R.D.Spend') +
   ylab('Profit')
 ```
-![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/TrainingSetP2.png)  
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/TrainingSetP2.png) 
+
+We use the Test Set to create the prediction visualization.
 ```r
 //Test Data Set
 ggplot() +
@@ -153,6 +163,7 @@ ggplot() +
 ![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/TestSetP2.png)
 
 ## 7.- Building the optimal model using Backward Elimination
+We start creating the optimal model for the use of Backward Elimination.
 ```r
 regressor = lm(formula = Profit ~ R.D.Spend + Administration + Marketing.Spend + State,
                data = dataset )
@@ -175,8 +186,8 @@ y_pred
 ```
 
 ## 8.- Analyze the following automation backwardElimination function 
+We start by declaring the function, this takes the amount of data entries in the dataset as X and sl as 0.05. Following, it iterates the same amount of data entries the dataset has and applies the MLR formula, if the values of the coefficients in maxVar is greater than sl (0.05) then it takes it out as a backward elimination and continues iterating until finished with all the data entries. Finally, it takes the data of the coefficients obtained and prints it on the console.
 ```r
-// We start by declaring the function, this takes the amount of data entries in the dataset as X and sl as 0.05. Following, it iterates the same amount of data entries the dataset has and applies the MLR formula, if the values of the coefficients in maxVar is greater than sl (0.05) then it takes it out as a backward elimination and continues iterating until finished with all the data entries. Finally, it takes the data of the coefficients obtained and prints it on the console.
 backwardElimination <- function(x, sl) {
   numVars = length(x)
   for (i in c(1:numVars)){
