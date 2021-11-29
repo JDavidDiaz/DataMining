@@ -6,6 +6,7 @@ In the branch named _"Unit 3"_ we have the following practices:
 
 [Practice_1](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Practices/Practice_1.r)   
 [Practice_2](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Practices/Practice_2.R)
+[Practice_3](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Practices/Practice_3.r)
 
 # Practice 1 - Simple Linear Regression
 ## 1.- Importing the dataset
@@ -208,6 +209,120 @@ training_set
 backwardElimination(training_set, SL)
 ```
 ![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/P2.png)
+
+# Practice 3 - Logistic Regression
+## 1.- Importing the dataset
+```r
+dataset <- read.csv('Social_Network_Ads.csv')
+```
+## 2.- Importing Libraries.
+For doing the splitting, we need to install the caTools package and import it
+```r
+install.packages('caTools')
+library(caTools)
+```
+## 3.- Setting the seed
+We will separate the data set into the training data set and the test data set, this seed will allow us to make the same partitions in the data sets.
+```r
+set.seed(123)
+```
+## 4.- Splitting the dataset into the Training set and Test set
+Here the training_set contains 75% of the data and test_set contains 25% of the data.
+```r
+split <- sample.split(dataset$Purchased, SplitRatio = 0.75)
+```
+## 5.- Assigning subset
+the subset with the split = TRUE will be assigned to the training and the subset with the split = FALSE will be assigned to the test
+```r
+training_set <- subset(dataset, split == TRUE)
+test_set <- subset(dataset, split == FALSE)
+```
+## 6.- Feature Scaling
+The Feature scaling is a method used to normalize the range of independent variables whose default method centers and/or scales the columns of a numeric matrix.
+```r
+training_set[, 1:2] <- scale(training_set[, 1:2])
+test_set[, 1:2] <- scale(test_set[, 1:2])
+```
+## 7.- Fitting Simple Linear Regression to the Training set
+Here we create the classifier for the logistic regression. The gml (generalized linear models) is used because the logistic regression is a linear classifier. The first argument is a formula that takes the dependent variable and then specifies that we want to take all the independent variables. The next argument is the family. For logistic regression, we have to specify the binomial family. 
+```r
+classifier = glm(formula = Purchased ~ ., family = binomial, data = training_set)
+```
+## 8.- Predicting the Test set results
+The predict function is used to predict the probabilities by using the logistic regression classifier. If the prob_pred value is greater than 0.5 then it predicts the value 1 otherwise it predicts the value 0.
+```r
+prob_pred = predict(classifier, type = 'response', newdata = test_set[-3])
+prob_pred
+y_pred = ifelse(prob_pred > 0.5, 1, 0)
+y_pred
+```
+## 9.- Making the Confusion Metrix
+the cm (confusion matrix) will count the number of correct predictions and the number of incorrect predictions.
+```r
+cm = table(test_set[, 3], y_pred)
+cm
+```
+## 10.- Visualizing with ggplot2 
+Here are some simple plots using ggplot2. This plot shows the results of the training set for EstimatedSalary and Purchased.    
+
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice3_Resource1.jpg)    
+
+This plot shows the same results but for Age and Purchased  
+
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice3_Resource2.jpg)    
+
+Now we do the same but now for the test dataset. One for EstimatedSalary and Purchased and other for Age and Purchased  
+
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice3_Resource3.jpg)     
+
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice3_Resource4.jpg) 
+
+## 10.- Visualizing the Training set results with ElemStatLearn
+ElemStatLearn a library that refers to a book that allows us to generate plots described in the book as the following form.
+```r
+install.packages(file.choose(), repos=NULL)
+library(ElemStatLearn)
+set = training_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+prob_set = predict(classifier, type = 'response', newdata = grid_set)
+y_grid = ifelse(prob_set > 0.5, 1, 0)
+plot(set[, -3],
+     main = 'Logistic Regression (Training set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+The red points on the model are the training set observations for the purchased when is equal to zero and the green points are the training set observations for purchase when is equal to 1.    
+
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice1_Resource5.jpg)  
+
+## 11.- Visualizing the test set results
+
+Same as above but now for the training set
+```r
+library(ElemStatLearn)
+set = test_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+prob_set = predict(classifier, type = 'response', newdata = grid_set)
+y_grid = ifelse(prob_set > 0.5, 1, 0)
+plot(set[, -3],
+     main = 'Logistic Regression (Test set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```   
+
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice1_Resource6.jpg) 
 
 
 ### 
