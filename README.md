@@ -299,7 +299,7 @@ points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
 ```
 The red points on the model are the training set observations for the purchased when is equal to zero and the green points are the training set observations for purchase when is equal to 1.    
 
-![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice1_Resource5.jpg)  
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice3_Resource5.jpg)  
 
 ## 11.- Visualizing the test set results
 
@@ -322,7 +322,7 @@ points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
 points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
 ```   
 
-![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice1_Resource6.jpg) 
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice3_Resource6.jpg) 
 
 
 ### 
