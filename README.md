@@ -7,6 +7,7 @@ In the branch named _"Unit 3"_ we have the following practices:
 [Practice_1](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Practices/Practice_1.r)   
 [Practice_2](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Practices/Practice_2.R)
 [Practice_3](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Practices/Practice_3.r)
+[Practice_4](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Practices/Practice_4.R)
 
 # Practice 1 - Simple Linear Regression
 ## 1.- Importing the dataset
@@ -324,7 +325,7 @@ points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
 
 ![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice3_Resource6.jpg) 
 
-# Practice 3 - Logistic Regression
+# Practice 4 - K-NN
 
 ## 1.- Importing the dataset
 Import the dataset and clean the data to obtain columns 3 to 5. The column "Purchased" is being made factors. 
@@ -399,6 +400,7 @@ contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
 points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
 points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
 ```
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/plot1_p4.png) 
 ## 8.- Visualization of the Test Set
 In here we will set the test set results as the ones to be used and create a grid that will allow us to show the data as dots acording to their values. The columns that will be used are Age and EstimatedSalary, which will then be used to trace the grid when the training happens. Then, we will plot the data, so we set up the main title, the labels, range, point size, bg, transparency and color in order to make a clearly understandable plot. 
 ```r
@@ -419,6 +421,7 @@ contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
 points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
 points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
 ```
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/plot2_p4.png) 
 
 ### 
 # **Collaborators:**
