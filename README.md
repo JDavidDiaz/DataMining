@@ -324,6 +324,101 @@ points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
 
 ![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice3_Resource6.jpg) 
 
+# Practice 3 - Logistic Regression
+
+## 1.- Importing the dataset
+Import the dataset and clean the data to obtain columns 3 to 5. The column "Purchased" is being made factors. 
+```r
+dataset <- read.csv('Social_Network_Ads.csv')
+dataset = dataset[3:5]
+dataset$Purchased = factor(dataset$Purchased, levels = c(0, 1))
+```
+## 2.- Splitting Data
+Split the data into 2 different samples, one is used for training and the other for testing. The random seed is used to prevent a sequence of data that will render the practice useless.
+```r
+# Splitting the dataset into the Training set and Test set
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Purchased, SplitRatio = 0.75)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+## 3.- Scaling the Split Sets
+Scale the split sets we just made in order to fit the columns.
+```r
+# Feature Scaling
+training_set[-3] = scale(training_set[-3])
+test_set[-3] = scale(test_set[-3])
+```
+## 4.- Fitting the Training Set in order to make a prediction with the Test Set
+In here we fit the K-NN in order to make a prediction with the sets we just made. One of the sets will train the model while the other will be used to test that the model is working.
+```r
+# Fitting K-NN classifier to the Training set and Predicting the Test set results
+# Create your classifier
+# install.packages('class')
+
+library(class)
+y_pred = knn(train = training_set[, -3],
+             test = test_set[, -3],
+             cl = training_set[, 3],
+             k = 5)
+y_pred
+```
+## 5.- Creating a Confusion Matrix
+This matrix will help us by counting the number of correct predictions made.
+```r
+# Making the Confusion Matrix
+cm = table(test_set[, 3], y_pred)
+cm
+```
+## 6.- Installing the ElemStatLearn Package
+This is a mandatory package used for the visualization of data in this exercise. Install if not already done before.
+```r
+# Visualising the Training set results
+# install.packages(file.choose(), repos=NULL)
+library(ElemStatLearn)
+```
+## 7.- Visualization of the Training Set
+In here we will set the training set results as the ones to be used and create a grid that will allow us to show the data as dots acording to their values. The columns that will be used are Age and EstimatedSalary, which will then be used to trace the grid when the training happens. Then, we will plot the data, so we set up the main title, the labels, range, point size, bg, transparency and color in order to make a clearly understandable plot. 
+```r
+set = training_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = knn(train = training_set[, -3],
+             test = grid_set,
+             cl = training_set[, 3],
+             k = 5)
+plot(set[, -3],
+     main = 'K-NN Classifier (Training set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+## 8.- Visualization of the Test Set
+In here we will set the test set results as the ones to be used and create a grid that will allow us to show the data as dots acording to their values. The columns that will be used are Age and EstimatedSalary, which will then be used to trace the grid when the training happens. Then, we will plot the data, so we set up the main title, the labels, range, point size, bg, transparency and color in order to make a clearly understandable plot. 
+```r
+# Visualising the Test set results
+set = test_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = knn(train = training_set[, -3],
+             test = grid_set,
+             cl = training_set[, 3],
+             k = 5)
+plot(set[, -3], main = 'K-NN Classifier (Test set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
 
 ### 
 # **Collaborators:**
