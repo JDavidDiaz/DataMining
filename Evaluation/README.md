@@ -54,3 +54,65 @@ The first argument passed in the function is the classifier. The second argument
 y_pred = predict(classifier, newdata = test_set[-3])
 y_pred
 ```
+## 10.- Making the Confusion Matrix
+the cm (confusion matrix) will count the number of correct predictions and the number of incorrect predictions.
+```r
+cm = table(test_set[, 3], y_pred)
+cm
+```
+## 11.- Visualizing the Training set results with ElemStatLearn Library
+```r
+library(ElemStatLearn)
+# declare set as the training set
+set = training_set
+```
+Here we create the background region red/green. Each 0.01 is interpreted as 0 or 1 and is either green or red. The -1 and +1 give us the space around the edges.
+```r
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+```
+giving a name to the X and Y 
+```r
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+```
+here we use the classifier to predict the result of each of each of the pixel bits noted above
+```r
+y_grid = predict(classifier, newdata = grid_set)
+```
+now we plat the actual data
+```r
+plot(set[, -3],
+     main = 'Naive Bayes (Training set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2)) # this creates the limits to the values plotted and it creates the line between green and red
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+```
+here we run through all the y_pred data and ifelse to color the dots
+note the dots are the real data, the background is the pixel by pixel determination of purchased (0/1)
+```r
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+The red points on the model are the training set observations for the purchased when is equal to zero and the green points are the training set observations for purchase when is equal to 1.
+
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Test_Resource1.jpg)
+
+## 11.- Visualizing the test set results 
+Same as above but now for the training set
+```r
+library(ElemStatLearn)
+set = test_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, newdata = grid_set)
+plot(set[, -3], main = 'Naive Bayes (Test set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Test_Resource2.jpg)
