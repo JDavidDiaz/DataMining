@@ -1,73 +1,56 @@
-# Practice 1 - Simple Linear Regression
+# Test - Naive Bayes
+
+Implement the Naive Bayes classification model with the dataset Social_Network_Ads.csv and using the e1071 library with the naiveBayes () function. Once the classifier is obtained, do the data visualization analysis
+correspondent.
 ## 1.- Importing the dataset
 ```r
-dataset <- read.csv('Salary_Data.csv')
+dataset = read.csv('Social_Network_Ads.csv')
+dataset = dataset[3:5]
 ```
-## 2.- Splitting the Dataset.
+## 2.- Encoding the target feature as factor
+Encoding the catagorical variable as factor
+```r
+dataset$Purchased = factor(dataset$Purchased, levels = c(0, 1))
+```
+## 3.- Splitting the Dataset.
 For doing the splitting, we need to install the caTools package and import it
 ```r
 install.packages('caTools')
-library(caTools
+library(caTools)
 ```
-## 3.- Setting the seed
+## 4.- Setting the seed
 We will separate the data set into the training data set and the test data set, this seed will allow us to make the same partitions in the data sets.
 ```r
 set.seed(123)
 ```
-## 4.- Splitting the dataset into the Training set and Test set
-Here in this dataset, we are having only 30 rows. So, we are allowing 20 rows(2/3) to the training dataset and 10 rows(1/3) to the test dataset.
+## 5.- Splitting the dataset into the Training set and Test set
+Here the training_set contains 75% of the data and test_set contains 25% of the data.
 ```r
-split <- sample.split(dataset$Salary, SplitRatio = 2/3)
+split = sample.split(dataset$Purchased, SplitRatio = 0.75)
 ```
-## 5.- Assigning subset
+## 6.- Assigning subset
 the subset with the split = TRUE will be assigned to the training and the subset with the split = FALSE will be assigned to the test
 ```r
 training_set <- subset(dataset, split == TRUE)
 test_set <- subset(dataset, split == FALSE)
 ```
-## 6.- Fitting Simple Linear Regression to the Training set
-lm() function is used to make a linear regression model that will fit our training.
+## 7.- Feature Scaling
+The Feature scaling is a method used to normalize the range of independent variables whose default method centers and/or scales the columns of a numeric matrix.
 ```r
-regressor = lm(formula = Salary ~ YearsExperience, data = dataset)
+training_set[-3] = scale(training_set[-3])
+test_set[-3] = scale(test_set[-3])
 ```
-## 7.- Analyzing the model
-To analyze our model. We use the summary command
+## 8.- Fitting Naive Bayes to Training set
+x will be the independent variables (the -3 removes from de dataset the column we don’t need), y is the dependent variable.
 ```r
-summary(regressor)
+install.packages('e1071')
+library(e1071)
+classifier = naiveBayes(x = training_set[-3],
+                        y = training_set$Purchased)
 ```
-## 8.- Predicting the Test set results
-The first argument passed in the function is the model. The second argument is newdata that specifies which dataset we want to implement our trained model on and predict the results
+## 9.- Predicting the Test set results
+The first argument passed in the function is the classifier. The second argument is newdata that specifies which dataset we want to implement our trained model on and predict the results
 ```r
-y_pred = predict(regressor, newdata = test_set)
+y_pred = predict(classifier, newdata = test_set[-3])
+y_pred
 ```
-## 9.- Visualizing the Training set results
-Visualization of the training set results using the ggplot2 library.
-```r
-library(ggplot2)
-ggplot() +
-  geom_point(aes(x=training_set$YearsExperience, y=training_set$Salary),
-             color = 'red') +
-  geom_line(aes(x = training_set$YearsExperience, y = predict(regressor, newdata = training_set)),
-            color = 'blue') +
-  ggtitle('Salary vs Experience (Training Set)') +
-  xlab('Years of experience') +
-  ylab('Salary')
-```
-The blue colored straight line in the graph represents the regressor that we have made from the training dataset. The red-colored dots represent the actual training dataset   
-
-![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice1_Resource1.jpg)  
-
-## 10.- Visualizing the Test set results
-As we have done for visualizing the training dataset,  we are going to do the same for the test dataset.
-```r
-ggplot() +
-  geom_point(aes(x=test_set$YearsExperience, y=test_set$Salary),
-             color = 'red') +
-  geom_line(aes(x = training_set$YearsExperience, y = predict(regressor, newdata = training_set)),
-            color = 'blue') +
-  ggtitle('Salary vs Experience (Test Set)') +
-  xlab('Years of experience') +
-  ylab('Salary')
-```
-
-![imagen](https://github.com/JDavidDiaz/DataMining/blob/Unit_3/Resources/Practice1_Resource2.jpg)
